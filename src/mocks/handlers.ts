@@ -4,14 +4,16 @@ interface Body {
   username: string;
   password: string;
 }
-export const handlers = [
-  //   http.get("/api/users", () => {
-  //     return HttpResponse.json([
-  //       { id: 1, name: "Alice" },
-  //       { id: 2, name: "Bob" },
-  //     ]);
-  //   }),
 
+interface task {
+  id: number;
+  title: string;
+  description: string;
+  status: boolean;
+}
+type Tasks = task[];
+
+export const handlers = [
   http.post("/api/login", async ({ request }) => {
     const body = (await request.json()) as Body;
 
@@ -24,5 +26,19 @@ export const handlers = [
       { message: "Invalid credentials" },
       { status: 401 }
     );
+  }),
+
+  http.get("/api/tasks", () => {
+    const tasks = localStorage.getItem("tasks");
+    if (tasks) {
+      return HttpResponse.json(JSON.parse(tasks));
+    }
+    return HttpResponse.json([]);
+  }),
+  http.post("/api/tasks", async ({ request }) => {
+    const newTasks = (await request.json()) as Tasks;
+
+    localStorage.setItem("tasks", JSON.stringify(newTasks));
+    return HttpResponse.json({ message: "task created" }, { status: 200 });
   }),
 ];
