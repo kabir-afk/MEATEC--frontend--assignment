@@ -16,10 +16,7 @@ export const handlers = [
     const body = (await request.json()) as Body;
 
     if (body.username === "test" && body.password === "test123") {
-      localStorage.setItem(
-        "token",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30"
-      );
+      localStorage.setItem("token", "734f8h398f30f9j30f");
       return HttpResponse.json({ message: "user created" }, { status: 200 });
     }
 
