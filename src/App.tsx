@@ -1,35 +1,85 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "./components/AuthContext";
 
 function App() {
-  const [count, setCount] = useState(0)
+  interface task {
+    id: number;
+    title: string;
+    description: string;
+    status: boolean;
+  }
+  const [tasks, setTasks] = useState<task[]>([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [status, setStatus] = useState(false);
+  const { setIsLoggedIn } = useContext(AuthContext);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/tasks");
+        setTasks(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  async function createTask(e: React.FormEvent) {
+    e.preventDefault();
+    const updatedTasks = [
+      ...tasks,
+      { id: Date.now(), title, description, status: false },
+    ];
+    setTasks(updatedTasks);
+
+    const response = await axios.post("/api/tasks", updatedTasks);
+    console.log(response.data);
+  }
+  async function logout() {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  }
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="">
+      hello world
+      <form onSubmit={createTask}>
+        <label htmlFor="title">Title</label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <label htmlFor="description">Description</label>
+        <input
+          type="text"
+          name="description"
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <input
+          type="checkbox"
+          name="status"
+          id="status"
+          checked={status}
+          onChange={(e) => setStatus(e.target.checked)}
+        />
+        <button type="submit">Create</button>
+      </form>
+      {tasks.map((item: task) => (
+        <div className="flex" key={item.id}>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </div>
+      ))}
+      <button onClick={logout}>Logout</button>
+    </div>
+  );
 }
 
-export default App
+export default App;
