@@ -36,9 +36,11 @@ export const handlers = [
     return HttpResponse.json([]);
   }),
   http.post("/api/tasks", async ({ request }) => {
-    const newTasks = (await request.json()) as Tasks;
+    const newTask = (await request.json()) as task;
+    const oldTasksString = localStorage.getItem("tasks");
+    const oldTasks: task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
 
-    localStorage.setItem("tasks", JSON.stringify(newTasks));
+    localStorage.setItem("tasks", JSON.stringify([...oldTasks, newTask]));
     return HttpResponse.json({ message: "task created" }, { status: 200 });
   }),
 ];

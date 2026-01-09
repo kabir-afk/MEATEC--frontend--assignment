@@ -35,7 +35,12 @@ function App() {
     ];
     setTasks(updatedTasks);
 
-    const response = await axios.post("/api/tasks", updatedTasks);
+    const response = await axios.post("/api/tasks", {
+      id: Date.now(),
+      title,
+      description,
+      status: false,
+    });
     console.log(response.data);
   }
   async function logout() {
@@ -61,13 +66,6 @@ function App() {
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-        />
-        <input
-          type="checkbox"
-          name="status"
-          id="status"
-          checked={status}
-          onChange={(e) => setStatus(e.target.checked)}
         />
         <button type="submit">Create</button>
       </form>
