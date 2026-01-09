@@ -93,6 +93,14 @@ function App() {
               });
             }}
           />
+          <button
+            onClick={async () => {
+              await axios.delete(`/api/tasks/${item.id}`);
+              setTasks((prev) => prev.filter((task) => task.id !== item.id));
+            }}
+          >
+            Delete
+          </button>
         </div>
       ))}
       <button onClick={logout}>Logout</button>

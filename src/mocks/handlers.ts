@@ -54,4 +54,13 @@ export const handlers = [
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
     return HttpResponse.json({ message: "task updated" }, { status: 200 });
   }),
+  http.delete("/api/tasks/:id", async ({ params }) => {
+    const { id } = params;
+    const oldTasksString = localStorage.getItem("tasks");
+    const oldTasks: task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
+    const updatedTasks = oldTasks.filter((task) => task.id !== Number(id));
+
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    return HttpResponse.json({ message: "task updated" }, { status: 200 });
+  }),
 ];
