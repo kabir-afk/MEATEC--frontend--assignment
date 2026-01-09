@@ -5,7 +5,7 @@ interface Body {
   password: string;
 }
 
-interface task {
+interface Task {
   id: number;
   title: string;
   description: string;
@@ -35,32 +35,32 @@ export const handlers = [
     return HttpResponse.json([]);
   }),
   http.post("/api/tasks", async ({ request }) => {
-    const newTask = (await request.json()) as task;
+    const newTask = (await request.json()) as Task;
     const oldTasksString = localStorage.getItem("tasks");
-    const oldTasks: task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
-
-    localStorage.setItem("tasks", JSON.stringify([...oldTasks, newTask]));
-    return HttpResponse.json({ message: "task created" }, { status: 200 });
+    const oldTasks: Task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
+    const updatedTasks = [...oldTasks, newTask];
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    return HttpResponse.json(updatedTasks, { status: 200 });
   }),
   http.put("/api/tasks/:id", async ({ request, params }) => {
     const { id } = params;
-    const newTask = (await request.json()) as task;
+    const newTask = (await request.json()) as Task;
     const oldTasksString = localStorage.getItem("tasks");
-    const oldTasks: task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
+    const oldTasks: Task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
     const updatedTasks = oldTasks.map((task) =>
       task.id === Number(id) ? { ...task, ...newTask } : task
     );
 
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    return HttpResponse.json({ message: "task updated" }, { status: 200 });
+    return HttpResponse.json(updatedTasks, { status: 200 });
   }),
   http.delete("/api/tasks/:id", async ({ params }) => {
     const { id } = params;
     const oldTasksString = localStorage.getItem("tasks");
-    const oldTasks: task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
+    const oldTasks: Task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
     const updatedTasks = oldTasks.filter((task) => task.id !== Number(id));
 
     localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    return HttpResponse.json({ message: "task updated" }, { status: 200 });
+    return HttpResponse.json(updatedTasks, { status: 200 });
   }),
 ];

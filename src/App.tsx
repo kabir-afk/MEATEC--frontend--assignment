@@ -2,14 +2,14 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./components/AuthContext";
 
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  status: boolean;
+}
 function App() {
-  interface task {
-    id: number;
-    title: string;
-    description: string;
-    status: boolean;
-  }
-  const [tasks, setTasks] = useState<task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const { setIsLoggedIn } = useContext(AuthContext);
@@ -28,18 +28,13 @@ function App() {
   }, []);
   async function createTask(e: React.FormEvent) {
     e.preventDefault();
-    const updatedTasks = [
-      ...tasks,
-      { id: Date.now(), title, description, status: false },
-    ];
-    setTasks(updatedTasks);
-
-    await axios.post("/api/tasks", {
+    const response = await axios.post("/api/tasks", {
       id: Date.now(),
       title,
       description,
       status: false,
     });
+    setTasks(response.data);
     setTitle("");
     setDescription("");
   }
@@ -68,7 +63,7 @@ function App() {
         />
         <button type="submit">Create</button>
       </form>
-      {tasks.map((item: task) => (
+      {tasks.map((item: Task) => (
         <div className="flex" key={item.id}>
           <h3>{item.title}</h3>
           <p>{item.description}</p>
@@ -78,25 +73,19 @@ function App() {
             id="status"
             checked={item.status}
             onChange={async (e) => {
-              setTasks((prev) =>
-                prev.map((task) =>
-                  task.id === item.id
-                    ? { ...task, status: e.target.checked }
-                    : task
-                )
-              );
-              await axios.put(`/api/tasks/${item.id}`, {
+              const response = await axios.put(`/api/tasks/${item.id}`, {
                 id: item.id,
                 title: item.title,
                 description: item.description,
                 status: e.target.checked,
               });
+              setTasks(response.data);
             }}
           />
           <button
             onClick={async () => {
-              await axios.delete(`/api/tasks/${item.id}`);
-              setTasks((prev) => prev.filter((task) => task.id !== item.id));
+              const response = await axios.delete(`/api/tasks/${item.id}`);
+              setTasks(response.data);
             }}
           >
             Delete
