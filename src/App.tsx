@@ -12,7 +12,6 @@ function App() {
   const [tasks, setTasks] = useState<task[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState(false);
   const { setIsLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
@@ -35,13 +34,14 @@ function App() {
     ];
     setTasks(updatedTasks);
 
-    const response = await axios.post("/api/tasks", {
+    await axios.post("/api/tasks", {
       id: Date.now(),
       title,
       description,
       status: false,
     });
-    console.log(response.data);
+    setTitle("");
+    setDescription("");
   }
   async function logout() {
     localStorage.removeItem("token");
@@ -49,7 +49,6 @@ function App() {
   }
   return (
     <div className="">
-      hello world
       <form onSubmit={createTask}>
         <label htmlFor="title">Title</label>
         <input
@@ -73,6 +72,27 @@ function App() {
         <div className="flex" key={item.id}>
           <h3>{item.title}</h3>
           <p>{item.description}</p>
+          <input
+            type="checkbox"
+            name="status"
+            id="status"
+            checked={item.status}
+            onChange={async (e) => {
+              setTasks((prev) =>
+                prev.map((task) =>
+                  task.id === item.id
+                    ? { ...task, status: e.target.checked }
+                    : task
+                )
+              );
+              await axios.put(`/api/tasks/${item.id}`, {
+                id: item.id,
+                title: item.title,
+                description: item.description,
+                status: e.target.checked,
+              });
+            }}
+          />
         </div>
       ))}
       <button onClick={logout}>Logout</button>

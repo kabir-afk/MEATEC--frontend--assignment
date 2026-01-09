@@ -11,7 +11,6 @@ interface task {
   description: string;
   status: boolean;
 }
-type Tasks = task[];
 
 export const handlers = [
   http.post("/api/login", async ({ request }) => {
@@ -42,5 +41,17 @@ export const handlers = [
 
     localStorage.setItem("tasks", JSON.stringify([...oldTasks, newTask]));
     return HttpResponse.json({ message: "task created" }, { status: 200 });
+  }),
+  http.put("/api/tasks/:id", async ({ request, params }) => {
+    const { id } = params;
+    const newTask = (await request.json()) as task;
+    const oldTasksString = localStorage.getItem("tasks");
+    const oldTasks: task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
+    const updatedTasks = oldTasks.map((task) =>
+      task.id === Number(id) ? { ...task, ...newTask } : task
+    );
+
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    return HttpResponse.json({ message: "task updated" }, { status: 200 });
   }),
 ];
