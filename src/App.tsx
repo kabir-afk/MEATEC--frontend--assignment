@@ -29,7 +29,6 @@ function App() {
   async function createTask(e: React.FormEvent) {
     e.preventDefault();
     const response = await axios.post("/api/tasks", {
-      id: Date.now(),
       title,
       description,
       status: false,
@@ -37,6 +36,19 @@ function App() {
     setTasks(response.data);
     setTitle("");
     setDescription("");
+  }
+  async function handleStatus(id: number, checked: boolean) {
+    const taskTobeUpdated = tasks.find((task) => task.id === id);
+    if (!taskTobeUpdated) return;
+    const response = await axios.put(`/api/tasks/${id}`, {
+      ...taskTobeUpdated,
+      status: checked,
+    });
+    setTasks(response.data);
+  }
+  async function deleteTask(id: number) {
+    const response = await axios.delete(`/api/tasks/${id}`);
+    setTasks(response.data);
   }
   async function logout() {
     localStorage.removeItem("token");
@@ -72,24 +84,9 @@ function App() {
             name="status"
             id="status"
             checked={item.status}
-            onChange={async (e) => {
-              const response = await axios.put(`/api/tasks/${item.id}`, {
-                id: item.id,
-                title: item.title,
-                description: item.description,
-                status: e.target.checked,
-              });
-              setTasks(response.data);
-            }}
+            onChange={(e) => handleStatus(item.id, e.target.checked)}
           />
-          <button
-            onClick={async () => {
-              const response = await axios.delete(`/api/tasks/${item.id}`);
-              setTasks(response.data);
-            }}
-          >
-            Delete
-          </button>
+          <button onClick={() => deleteTask(item.id)}>Delete</button>
         </div>
       ))}
       <button onClick={logout}>Logout</button>
