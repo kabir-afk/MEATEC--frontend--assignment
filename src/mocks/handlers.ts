@@ -35,7 +35,8 @@ export const handlers = [
     return HttpResponse.json([]);
   }),
   http.post("/api/tasks", async ({ request }) => {
-    const newTask = (await request.json()) as Task;
+    let newTask = (await request.json()) as Task;
+    newTask = { ...newTask, id: Date.now() };
     const oldTasksString = localStorage.getItem("tasks");
     const oldTasks: Task[] = oldTasksString ? JSON.parse(oldTasksString) : [];
     const updatedTasks = [...oldTasks, newTask];
