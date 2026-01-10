@@ -2,11 +2,24 @@
 
 A small React + TypeScript + Vite frontend project implementing a task management demo. It uses Tailwind CSS for styling, React Router for navigation, MSW (Mock Service Worker) for a local mock API, and a simple auth context to protect the dashboard route.
 
-**Why this project is useful**
+**Deployment note**
 
-- **Local-first development:** MSW provides a realistic backend simulation so you can develop without a real API.
-- **Modern stack:** React 19 + TypeScript + Vite + Tailwind for fast iteration and small build outputs.
-- **Examples of common patterns:** Context-based auth, private/public routes, Axios HTTP client, and theme toggling.
+This project uses Mock Service Worker (MSW) to simulate backend APIs during development.
+The mock service worker is only enabled in development mode.
+
+As a result, the deployed production build does not include a working backend.
+To experience full functionality, please run the project locally using `npm run dev`.
+
+**Technologies used**
+
+- Framework : React (Vite)
+- Language : TypeScript
+- State : Context API
+- Styling : Tailwind CSS
+- Mock API : Mock Service Worker (MSW)
+- HTTP : Axios
+
+As a bonus I have implemented dark mode and filters. I tried deploying the project on vercel but MSW will work in development only as mentioned in the note above but still here's the deployed link : https://meatec-frontend-assignment.vercel.app/.
 
 **Quick links**
 
@@ -63,13 +76,6 @@ npm run build
   - `hooks/` – `useTheme.tsx`
   - `App.tsx` – dashboard and task UI
   - `main.tsx` – router and bootstrapping
-
-**Useful commands**
-
-- `npm run dev` — start dev server (MSW enabled)
-- `npm run build` — build production output
-- `npm run preview` — preview built output
-- `npm run lint` — run ESLint
 
 **Where to look next**
 
