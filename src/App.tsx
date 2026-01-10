@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import useTheme from "./hooks/useTheme";
 import { AuthContext } from "./components/AuthContext";
+import { Filter } from "./components/Filter";
 
 interface Task {
   id: number;
@@ -12,6 +13,7 @@ interface Task {
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [activeTab, setActiveTab] = useState("All");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const isDisabled = !title || !description;
@@ -62,7 +64,9 @@ function App() {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
   }
-
+  const handleFilter = (filterValue: string) => {
+    setActiveTab(filterValue);
+  };
   return (
     <div>
       <div className="w-[50%] absolute left-[50%] -translate-x-[50%] top-32 text-primary">
@@ -70,6 +74,7 @@ function App() {
           <h1 className="uppercase text-white text-2xl font-bold tracking-widest flex-1">
             Task Manager
           </h1>
+          <Filter setFilter={handleFilter} />
           <button onClick={toggleTheme} className="cursor-pointer">
             {theme === "light" ? (
               <img src="/images/icon-moon.svg" alt="icon-moon" />
@@ -130,58 +135,64 @@ function App() {
         </form>
 
         <div className="rounded-md overflow-hidden shadow-lg">
-          {tasks.map((item: Task) => (
-            <div
-              className="group flex justify-between bg-task-background border-b border-border px-2.5 py-4"
-              key={item.id}
-            >
-              <div className="flex items-center gap-3">
-                <label className="checkbox border-2 border-border rounded-full overflow-hidden h-fit cursor-pointer flex items-center justify-center hover:border-2 hover:border-transparent hover:bg-linear-to-br hover:from-[hsl(192,100%,67%)] hover:to-[hsl(280,87%,65%)]">
-                  <input
-                    type="checkbox"
-                    className="hidden"
-                    checked={item.status}
-                    onChange={(e) => handleStatus(item.id, e.target.checked)}
-                  />
-                  <span
-                    className={`w-5 h-5 rounded-full flex items-center justify-center ${
-                      item.status
-                        ? "bg-linear-to-br from-[hsl(192,100%,67%)] to-[hsl(280,87%,65%)]"
-                        : "bg-task-background"
-                    }`}
-                  >
-                    <img
-                      src="/images/icon-check.svg"
-                      alt="icon-check"
-                      className={item.status ? "visible" : "invisible"}
-                    />
-                  </span>
-                </label>
-                <div className="flex flex-col">
-                  <h2
-                    className={`font-bold ${
-                      item.status ? "line-through text-muted" : ""
-                    }`}
-                  >
-                    {item.title}
-                  </h2>
-                  <p
-                    className={`text-muted ${
-                      item.status ? "line-through" : ""
-                    }`}
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              </div>
-              <button
-                className="cursor-pointer invisible group-hover:visible hover:scale-110 transition-transform"
-                onClick={() => deleteTask(item.id)}
+          {tasks
+            .filter((task) => {
+              if (activeTab === "All") return task;
+              else if (activeTab === "Completed") return task.status;
+              else if (activeTab === "Active") return !task.status;
+            })
+            .map((item: Task) => (
+              <div
+                className="group flex justify-between bg-task-background border-b border-border px-2.5 py-4"
+                key={item.id}
               >
-                <img src="/images/icon-cross.svg" alt="icon-cross" />
-              </button>
-            </div>
-          ))}
+                <div className="flex items-center gap-3">
+                  <label className="checkbox border-2 border-border rounded-full overflow-hidden h-fit cursor-pointer flex items-center justify-center hover:border-2 hover:border-transparent hover:bg-linear-to-br hover:from-[hsl(192,100%,67%)] hover:to-[hsl(280,87%,65%)]">
+                    <input
+                      type="checkbox"
+                      className="hidden"
+                      checked={item.status}
+                      onChange={(e) => handleStatus(item.id, e.target.checked)}
+                    />
+                    <span
+                      className={`w-5 h-5 rounded-full flex items-center justify-center ${
+                        item.status
+                          ? "bg-linear-to-br from-[hsl(192,100%,67%)] to-[hsl(280,87%,65%)]"
+                          : "bg-task-background"
+                      }`}
+                    >
+                      <img
+                        src="/images/icon-check.svg"
+                        alt="icon-check"
+                        className={item.status ? "visible" : "invisible"}
+                      />
+                    </span>
+                  </label>
+                  <div className="flex flex-col">
+                    <h2
+                      className={`font-bold ${
+                        item.status ? "line-through text-muted" : ""
+                      }`}
+                    >
+                      {item.title}
+                    </h2>
+                    <p
+                      className={`text-muted ${
+                        item.status ? "line-through" : ""
+                      }`}
+                    >
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  className="cursor-pointer invisible group-hover:visible hover:scale-110 transition-transform"
+                  onClick={() => deleteTask(item.id)}
+                >
+                  <img src="/images/icon-cross.svg" alt="icon-cross" />
+                </button>
+              </div>
+            ))}
         </div>
       </div>
     </div>
