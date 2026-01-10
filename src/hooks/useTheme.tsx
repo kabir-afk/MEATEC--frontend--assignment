@@ -14,7 +14,6 @@ export default function useTheme() {
   }, [theme]);
   const toggleTheme = () => {
     setTheme((prev) => (prev === "" ? "light" : ""));
-    console.log(theme);
   };
   return { theme, toggleTheme };
 }
