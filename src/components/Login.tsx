@@ -5,6 +5,7 @@ import { AuthContext } from "./AuthContext";
 const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const isDisabled = !username || !password;
   const { setIsLoggedIn } = useContext(AuthContext);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -55,7 +56,12 @@ const Login = () => {
           />
         </label>
         <button
-          className="w-full bg-bright-blue text-white py-2 rounded-md font-semibold"
+          className={`w-full bg-bright-blue text-white py-2 rounded-md font-semibold ${
+            isDisabled
+              ? "cursor-not-allowed opacity-50"
+              : "cursor-pointer hover:opacity-80"
+          }`}
+          disabled={isDisabled}
           type="submit"
         >
           Login
