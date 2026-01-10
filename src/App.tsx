@@ -69,7 +69,7 @@ function App() {
   };
   return (
     <div>
-      <div className="w-[90%] md:w-[50%] absolute left-[50%] -translate-x-[50%] top-32 text-primary">
+      <div className="w-[90%] md:w-1/2 absolute left-1/2 -translate-x-1/2 top-32 text-primary">
         <div className="flex gap-2 items-center mb-2">
           <h1 className="uppercase text-white text-2xl font-bold tracking-widest flex-1">
             Task Manager
