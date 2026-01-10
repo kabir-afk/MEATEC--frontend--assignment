@@ -55,6 +55,12 @@ Build for production:
 npm run build
 ```
 
+Preview the production build:
+
+```bash
+npm run preview
+```
+
 **How to use the app (brief)**
 
 - Open `http://localhost:5173` (Vite default) when running `npm run dev`.
