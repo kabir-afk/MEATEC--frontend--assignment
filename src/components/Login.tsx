@@ -12,7 +12,8 @@ const Login = () => {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      await axios.post("/api/login", { username, password });
+      const response = await axios.post("/api/login", { username, password });
+      localStorage.setItem("token", response.data.token);
       setIsLoggedIn(true);
     } catch (error) {
       toast.error("Wrong credentials");
@@ -21,9 +22,7 @@ const Login = () => {
   }
   return (
     <>
-      <div>
-        <Toaster />
-      </div>
+      <Toaster />
       <div className="w-[80%] md:w-1/3 absolute left-1/2 -translate-x-1/2 top-32 ">
         <h1 className="text-center uppercase text-white text-2xl font-bold tracking-widest">
           Login
