@@ -1,73 +1,78 @@
-# React + TypeScript + Vite
+**MEATEC Frontend Assignment**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React + TypeScript + Vite frontend project implementing a task management demo. It uses Tailwind CSS for styling, React Router for navigation, MSW (Mock Service Worker) for a local mock API, and a simple auth context to protect the dashboard route.
 
-Currently, two official plugins are available:
+**Why this project is useful**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Local-first development:** MSW provides a realistic backend simulation so you can develop without a real API.
+- **Modern stack:** React 19 + TypeScript + Vite + Tailwind for fast iteration and small build outputs.
+- **Examples of common patterns:** Context-based auth, private/public routes, Axios HTTP client, and theme toggling.
 
-## React Compiler
+**Quick links**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Code: [src/App.tsx](src/App.tsx)
+- Routing & bootstrap: [src/main.tsx](src/main.tsx)
+- Mock API handlers: [src/mocks/handlers.ts](src/mocks/handlers.ts)
+- Mock worker setup: [src/mocks/browser.ts](src/mocks/browser.ts)
 
-## Expanding the ESLint configuration
+**Getting started**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Prerequisites:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 18+ (or current LTS)
+- npm (or yarn / pnpm)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Clone and install dependencies:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone <repo-url>
+cd MEATEC-frontend-assignment
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Run the development server (MSW starts automatically in dev):
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+**How to use the app (brief)**
+
+- Open `http://localhost:5173` (Vite default) when running `npm run dev`.
+- The root route is a login page; valid demo credentials are username : `test` and password : `test123` (assignment mentioned that we can predefine a user).
+- After logging in you are redirected to `/dashboard` where you can create, toggle, and delete tasks.
+
+**How the mock API works**
+
+- The project uses MSW (Mock Service Worker). The worker is configured in [src/mocks/browser.ts](src/mocks/browser.ts) and started automatically from [src/main.tsx](src/main.tsx) when `import.meta.env.DEV` is true.
+- Request handlers live in [src/mocks/handlers.ts](src/mocks/handlers.ts). They intercept `POST /api/login`, `GET /api/tasks`, `POST /api/tasks`, `PUT /api/tasks/:id`, and `DELETE /api/tasks/:id`.
+- Handlers persist a simple in-browser datastore using `localStorage`, so data survives page reloads during development.
+- The production build does not start the MSW worker; the mock is only active in development.
+
+**Project structure (high level)**
+
+- `src/` – application source
+  - `components/` – `AuthContext`, `Login`, `PrivateRoute`, `PublicRoute`
+  - `mocks/` – `browser.ts`, `handlers.ts` (MSW setup)
+  - `hooks/` – `useTheme.tsx`
+  - `App.tsx` – dashboard and task UI
+  - `main.tsx` – router and bootstrapping
+
+**Useful commands**
+
+- `npm run dev` — start dev server (MSW enabled)
+- `npm run build` — build production output
+- `npm run preview` — preview built output
+- `npm run lint` — run ESLint
+
+**Where to look next**
+
+- Authentication and route protection: [src/components/AuthContext.tsx](src/components/AuthContext.tsx)
+- Mock handlers: [src/mocks/handlers.ts](src/mocks/handlers.ts)
+- App behavior and task interactions: [src/App.tsx](src/App.tsx)
