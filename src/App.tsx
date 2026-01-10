@@ -69,12 +69,11 @@ function App() {
   };
   return (
     <div>
-      <div className="w-[50%] absolute left-[50%] -translate-x-[50%] top-32 text-primary">
-        <div className="flex gap-4 items-center mb-4">
+      <div className="w-[90%] md:w-[50%] absolute left-[50%] -translate-x-[50%] top-32 text-primary">
+        <div className="flex gap-2 items-center mb-2">
           <h1 className="uppercase text-white text-2xl font-bold tracking-widest flex-1">
             Task Manager
           </h1>
-          <Filter setFilter={handleFilter} />
           <button onClick={toggleTheme} className="cursor-pointer">
             {theme === "light" ? (
               <img src="/images/icon-moon.svg" alt="icon-moon" />
@@ -89,18 +88,19 @@ function App() {
             Logout
           </button>
         </div>
+        <Filter setFilter={handleFilter} />
 
         <form onSubmit={createTask} className="flex flex-col gap-4 mb-6">
           <label
             htmlFor="title"
             className="bg-task-background rounded-md px-2.5 py-2"
           >
-            Title
+            Task title
             <input
               type="text"
               name="title"
               id="title"
-              placeholder="Enter title"
+              placeholder="What needs to be done ?"
               className="w-full bg-transparent outline-none placeholder:text-muted"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -115,7 +115,7 @@ function App() {
               type="text"
               name="description"
               id="description"
-              placeholder="Enter description"
+              placeholder="Add some details . . ."
               className="w-full bg-transparent outline-none placeholder:text-muted"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
