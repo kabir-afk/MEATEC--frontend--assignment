@@ -66,14 +66,11 @@ function App() {
   return (
     <div>
       <div className="w-[50%] absolute left-[50%] -translate-x-[50%] top-32 text-primary">
-        <div className="flex gap-4 items-center mb-8">
+        <div className="flex gap-4 items-center mb-4">
           <h1 className="uppercase text-white text-2xl font-bold tracking-widest flex-1">
             Task Manager
           </h1>
-          <button
-            onClick={toggleTheme}
-            className="px-4 py-2 bg-task-background rounded-md hover:bg-border transition-colors cursor-pointer"
-          >
+          <button onClick={toggleTheme} className="cursor-pointer">
             {theme === "light" ? (
               <img src="/images/icon-moon.svg" alt="icon-moon" />
             ) : (
@@ -139,7 +136,7 @@ function App() {
               key={item.id}
             >
               <div className="flex items-center gap-3">
-                <label className="checkbox border-2 border-border rounded-full overflow-hidden h-fit cursor-pointer flex items-center justify-center hover:border-2 hover:border-transparent hover:bg-gradient-to-br hover:from-[hsl(192,100%,67%)] hover:to-[hsl(280,87%,65%)] hover:p-[2px]">
+                <label className="checkbox border-2 border-border rounded-full overflow-hidden h-fit cursor-pointer flex items-center justify-center hover:border-2 hover:border-transparent hover:bg-linear-to-br hover:from-[hsl(192,100%,67%)] hover:to-[hsl(280,87%,65%)]">
                   <input
                     type="checkbox"
                     className="hidden"
@@ -149,7 +146,7 @@ function App() {
                   <span
                     className={`w-5 h-5 rounded-full flex items-center justify-center ${
                       item.status
-                        ? "bg-gradient-to-br from-[hsl(192,100%,67%)] to-[hsl(280,87%,65%)]"
+                        ? "bg-linear-to-br from-[hsl(192,100%,67%)] to-[hsl(280,87%,65%)]"
                         : "bg-task-background"
                     }`}
                   >
