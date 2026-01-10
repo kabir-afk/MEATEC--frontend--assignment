@@ -10,35 +10,56 @@ const Login = () => {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/login", { username, password });
-      console.log(response.data);
+      await axios.post("/api/login", { username, password });
       setIsLoggedIn(true);
     } catch (error) {
       console.log(error);
     }
   }
   return (
-    <div>
-      <h1>Login page</h1>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="user">Username</label>
-        <input
-          type="text"
-          name="user"
-          id="user"
-          placeholder="JohnDoe"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
+    <div className="w-[80%] md:w-1/3 absolute left-1/2 -translate-x-1/2 top-32 ">
+      <h1 className="text-center uppercase text-white text-2xl font-bold tracking-widest">
+        Login
+      </h1>
+      <form
+        className="flex flex-col justify-center items-center gap-2 text-primary"
+        onSubmit={handleSubmit}
+      >
+        <label
+          htmlFor="user"
+          className="w-full bg-task-background rounded-md px-2.5 py-2"
+        >
+          Username
+          <input
+            type="text"
+            name="user"
+            id="user"
+            placeholder="JohnDoe"
+            className="w-full bg-transparent outline-none placeholder:text-muted"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </label>
+        <label
+          htmlFor="password"
+          className="w-full bg-task-background rounded-md px-2.5 py-2"
+        >
+          Password
+          <input
+            type="password"
+            name="password"
+            id="password"
+            className="w-full bg-transparent outline-none placeholder:text-muted"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <button
+          className="w-full bg-bright-blue text-white py-2 rounded-md font-semibold"
+          type="submit"
+        >
+          Login
+        </button>
       </form>
     </div>
   );
