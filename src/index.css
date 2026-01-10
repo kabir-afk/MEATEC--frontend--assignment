@@ -1,4 +1,25 @@
 @import "tailwindcss";
+
+:root {
+  --bg-image: url(images/bg-desktop-dark.jpg);
+  --bg-color: hsl(235, 21%, 11%);
+  --task-bg: hsl(235, 24%, 19%);
+  --primary: hsl(234, 39%, 85%);
+  --muted: hsl(234, 11%, 52%);
+  --border-color: hsl(233, 14%, 35%);
+  --hover-text: hsl(236, 33%, 92%);
+}
+
+.light {
+  --bg-image: url(images/bg-desktop-light.jpg);
+  --bg-color: hsl(0, 0%, 98%);
+  --task-bg: hsl(0, 0%, 100%);
+  --primary: hsl(235, 19%, 35%);
+  --muted: hsl(236, 9%, 61%);
+  --border-color: hsl(233, 11%, 84%);
+  --hover-text: hsl(235, 19%, 35%);
+}
+
 @theme {
   --color-bright-blue: hsl(220, 98%, 61%);
   --color-check-background: linear-gradient(
@@ -7,21 +28,13 @@
     hsl(280, 87%, 65%)
   );
 
-  --color-very-dark-blue: hsl(235, 21%, 11%);
-  --color-very-dark-desaturated-blue: hsl(235, 24%, 19%);
-  --color-light-grayish-blue: hsl(234, 39%, 85%);
-  --color-light-grayish-blue-hover: hsl(236, 33%, 92%);
-  --color-dark-grayish-blue: hsl(234, 11%, 52%);
-  --color-very-dark-grayish-blue: hsl(233, 14%, 35%);
-  --color-very-dark-grayish-blue-alt: hsl(237, 14%, 26%);
-}
-
-.light {
-  --color-very-light-gray: hsl(0, 0%, 98%);
-  --color-very-light-grayish-blue: hsl(236, 33%, 92%);
-  --color-light-grayish-blue-light-mode: hsl(233, 11%, 84%);
-  --color-dark-grayish-blue: hsl(236, 9%, 61%);
-  --color-very-dark-grayish-blue-light-mode: hsl(235, 19%, 35%);
+  --color-bg-image: var(--bg-image);
+  --color-bg-main: var(--bg-color);
+  --color-task-background: var(--task-bg);
+  --color-primary: var(--primary);
+  --color-muted: var(--muted);
+  --color-border: var(--border-color);
+  --color-text-hover: var(--hover-text);
 }
 
 *,
@@ -29,19 +42,15 @@
 *::after {
   box-sizing: border-box;
 }
+
 img {
   width: 100%;
 }
+
 body {
-  background: url(images/bg-desktop-dark.jpg) var(--color-very-dark-blue)
-    no-repeat;
+  background: var(--bg-image) var(--bg-color) no-repeat;
   background-size: 100vw 300px;
-  font-size: 1.125rem;
+  /* font-size: 1.125rem; */
   font-family: "Josefin Sans", sans-serif;
   height: 100vh;
-
-  /* @include mobile() {
-            background: url(images/bg-mobile-dark.jpg) $Very-Dark-Blue no-repeat;
-            background-size: 100vw 200px;
-        } */
 }
